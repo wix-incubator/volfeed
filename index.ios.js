@@ -16,19 +16,17 @@ import {
 export default class volfeed extends Component {
   render() {
     return (
-      <View style={styles.container}>
-          <Image
-            style={{width: 300, height: 1334}}
-            source={require('./img/oneapp.png')}
-          />
-      </View>
+      <Image
+        style={{width: null, height: null, flex: 1}}
+        source={require('./images/oneapp.png')}
+      />
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    //flex: 1
   }
 });
 
