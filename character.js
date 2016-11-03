@@ -137,9 +137,9 @@ export default class Character extends Component {
             ref={(b) => { this.body = b; }} >
           <Sprite
             repeat={true}
-            src={require('./images/character-sprite.png')}
+            src={require('./images/character.png')}
             scale={1}
-            state={0}
+            state={1}
             steps={[9, 9, 0, 4, 5]}
           />
           </Body>
