@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, {Component, PropTypes} from 'react';
 import {observer} from 'mobx-react/native';
 import Matter from 'matter-js';
 import GameStore from './stores/game-store';
@@ -11,7 +11,7 @@ import {
   Image,
   TouchableHighlight,
   Alert,
-  TouchableOpacity
+  TouchableWithoutFeedback
 } from 'react-native';
 import {Loop, Stage, World, Body, Sprite} from 'react-game-kit/native';
 import autobind from 'react-autobind';
@@ -91,20 +91,23 @@ export default class volfeed extends Component {
     return this.renderGame()
   }
 
+  onTap() {
+    GameStore.jumping = true;
+  }
+
   renderGame() {
     return (
-      <Loop>
-        <TouchableOpacity onPress={this.onTap}>
-            <Stage width={1024} height={576} style={{backgroundColor: '#CCC'}}>
-
+      <TouchableWithoutFeedback onPress={this.onTap}>
+        <View>
+        <Loop>
+          <Stage width={1024} height={576} style={{backgroundColor: '#CCC'}}>
             <World onInit={this.physicsInit}>
-
-              <Character store={GameStore} />
+              <Character store={GameStore}/>
             </World>
-
-        </Stage>
-        </TouchableOpacity>
-      </Loop>
+          </Stage>
+        </Loop>
+          </View>
+      </TouchableWithoutFeedback>
     );
   }
 
@@ -114,11 +117,5 @@ export default class volfeed extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    //flex: 1
-  }
-});
 
 AppRegistry.registerComponent('volfeed', () => volfeed);

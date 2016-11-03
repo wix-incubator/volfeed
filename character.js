@@ -1,5 +1,6 @@
-import React, { Component, PropTypes } from 'react';
+import React, {Component, PropTypes} from 'react';
 import {observer} from 'mobx-react/native';
+import {autorun} from 'mobx';
 import Matter from 'matter-js';
 
 import {
@@ -36,7 +37,7 @@ export default class Character extends Component {
   };
 
   move = (body, x) => {
-    Matter.Body.setVelocity(body, { x, y: 0 });
+    Matter.Body.setVelocity(body, {x, y: 0});
   };
 
   jump = () => {
@@ -44,15 +45,15 @@ export default class Character extends Component {
     this.isJumping = true;
     Matter.Body.applyForce(
       body,
-      { x: 0, y: 0 },
-      { x: 0, y: -2 },
+      {x: 0, y: 0},
+      {x: 0, y: -2},
     );
     Matter.Body.set(body, 'friction', 0.0001);
   };
 
   update = () => {
-    const { store } = this.props;
-    const { body } = this.body;
+    const {store} = this.props;
+    const {body} = this.body;
 
     const midPoint = Math.abs(store.stageX) + 448;
 
@@ -105,6 +106,12 @@ export default class Character extends Component {
   }
 
   componentDidMount() {
+    autorun(() => {
+      if (this.props.store.jumping) {
+        this.props.store.jumping = false;
+        this.jump();
+      }
+    });
     Matter.Events.on(this.context.engine, 'afterUpdate', this.update);
   }
 
@@ -113,9 +120,9 @@ export default class Character extends Component {
   }
 
   getWrapperStyles() {
-    const { characterPosition, stageX } = this.props.store;
-    const { scale } = this.context;
-    const { x, y } = characterPosition;
+    const {characterPosition, stageX} = this.props.store;
+    const {scale} = this.context;
+    const {x, y} = characterPosition;
     const targetX = x + stageX;
 
     return {
@@ -129,22 +136,22 @@ export default class Character extends Component {
     // const x = this.props.store.characterPosition.x;
 
     return (
-      <TouchableOpacity onPress={this.jump}>
-        <View style={this.getWrapperStyles()}>
-          <Body
-            args={[300, 384, 1000, 64]}
-            inertia={Infinity}
-            ref={(b) => { this.body = b; }} >
-          <Sprite
-            repeat={true}
-            src={require('./images/musa.png')}
-            scale={1.2}
-            state={1}
-            steps={[9, 9, 0, 4, 5]}
-          />
-          </Body>
-        </View>
-      </TouchableOpacity>
+      <View style={this.getWrapperStyles()}>
+        <Body
+          args={[300, 384, 1000, 64]}
+          inertia={Infinity}
+          ref={(b) => {
+            this.body = b;
+          }}>
+        <Sprite
+          repeat={true}
+          src={require('./images/musa.png')}
+          scale={1.2}
+          state={1}
+          steps={[9, 9, 0, 4, 5]}
+        />
+        </Body>
+      </View>
     );
   }
 }
