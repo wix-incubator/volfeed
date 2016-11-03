@@ -1,9 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, {Component} from 'react';
 import {
   AppRegistry,
@@ -14,6 +8,7 @@ import {
   TouchableHighlight,
   Alert
 } from 'react-native';
+import {Loop, Stage, World, Body, Sprite} from 'react-game-kit/native';
 
 export default class volfeed extends Component {
   constructor(props) {
@@ -45,7 +40,27 @@ export default class volfeed extends Component {
     if (!this.state.gameMode) {
       return this.renderOneApp()
     }
-    return this.renderTheDarkSide()
+    return this.renderGame()
+  }
+
+  renderGame() {
+    return (
+      <Loop>
+        <Stage width={1024} height={576}>
+          <World>
+            <Body>
+            <Sprite
+              repeat={true}
+              src={require('./images/character-sprite.png')}
+              scale={this.context.scale * 2}
+              state={0}
+              steps={[9, 9, 0, 4, 5]}
+            />
+            </Body>
+          </World>
+        </Stage>
+      </Loop>
+    );
   }
 
   render() {
