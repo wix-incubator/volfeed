@@ -4,22 +4,53 @@
  * @flow
  */
 
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   AppRegistry,
   StyleSheet,
   Text,
   View,
-  Image
+  Image,
+  TouchableHighlight,
+  Alert
 } from 'react-native';
 
 export default class volfeed extends Component {
-  render() {
+  constructor(props) {
+    super(props);
+    this.state = {gameMode: false};
+  }
+
+  renderOneApp() {
+    return (
+      <TouchableHighlight style={{flex: 1}} onPress={() => this.setState({gameMode: true})}>
+        <Image
+          style={{width: null, height: null, flex: 1}}
+          source={require('./images/oneapp.png')}
+        />
+      </TouchableHighlight>
+    );
+  }
+
+  renderTheDarkSide() {
     return (
       <Image
         style={{width: null, height: null, flex: 1}}
-        source={require('./images/oneapp.png')}
+        source={require('./images/oneappBlack.png')}
       />
+    );
+  }
+
+  renderCorrectImage() {
+    if (!this.state.gameMode) {
+      return this.renderOneApp()
+    }
+    return this.renderTheDarkSide()
+  }
+
+  render() {
+    return (
+      this.renderCorrectImage()
     );
   }
 }
