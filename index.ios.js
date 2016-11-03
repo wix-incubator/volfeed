@@ -1,4 +1,8 @@
-import React, {Component} from 'react';
+import React, { Component, PropTypes } from 'react';
+import {observer} from 'mobx-react/native';
+import Matter from 'matter-js';
+import GameStore from './stores/game-store';
+
 import {
   AppRegistry,
   StyleSheet,
@@ -6,15 +10,29 @@ import {
   View,
   Image,
   TouchableHighlight,
-  Alert
+  Alert,
+  TouchableOpacity
 } from 'react-native';
 import {Loop, Stage, World, Body, Sprite} from 'react-game-kit/native';
+import autobind from 'react-autobind';
+import Character from './character'
+
 
 export default class volfeed extends Component {
   constructor(props) {
     super(props);
     this.state = {gameMode: false};
+    autobind(this);
   }
+
+  static propTypes = {
+    store: PropTypes.object,
+  };
+
+  static contextTypes = {
+    engine: PropTypes.object,
+    scale: PropTypes.number,
+  };
 
   renderOneApp() {
     return (
@@ -37,28 +55,24 @@ export default class volfeed extends Component {
   }
 
   renderCorrectImage() {
-    if (!this.state.gameMode) {
-      return this.renderOneApp()
-    }
+    // if (!this.state.gameMode) {
+    //   return this.renderOneApp()
+    // }
     return this.renderGame()
   }
 
   renderGame() {
     return (
       <Loop>
-        <Stage width={1024} height={576}>
-          <World>
-            <Body>
-            <Sprite
-              repeat={true}
-              src={require('./images/character-sprite.png')}
-              scale={this.context.scale * 2}
-              state={0}
-              steps={[9, 9, 0, 4, 5]}
-            />
-            </Body>
-          </World>
+        <TouchableOpacity onPress={this.onTap}>
+        <Stage width={1024} height={576} style={{backgroundColor: '#CCC'}}>
+
+            <World>
+              <Character store={GameStore} />
+            </World>
+
         </Stage>
+        </TouchableOpacity>
       </Loop>
     );
   }
