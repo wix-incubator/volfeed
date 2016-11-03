@@ -1,5 +1,4 @@
 import React, {Component, PropTypes} from 'react';
-import {observer} from 'mobx-react/native';
 import Matter from 'matter-js';
 import GameStore from './stores/game-store';
 
@@ -17,13 +16,12 @@ import {Loop, Stage, World, Body, Sprite} from 'react-game-kit/native';
 import autobind from 'react-autobind';
 import Character from './character'
 
-
 export default class volfeed extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      gameMode: false,
-      gameStarted: true
+      gameMode: 'notStarted',
+      gameStarted: false
     };
     autobind(this);
   }
@@ -41,29 +39,46 @@ export default class volfeed extends Component {
 
   renderOneApp() {
     return (
-      <TouchableHighlight style={{flex: 1}} onPress={() => this.setState({gameMode: true})}>
+      <TouchableHighlight style={{flex: 1}} onPress={() => this.setState({gameMode: 'showStart'})}>
         <Image
           style={{width: null, height: null, flex: 1}}
-          source={require('./images/oneapp.png')}
+          source={require('./images/bg1.png')}
         />
       </TouchableHighlight>
     );
   }
 
-  renderTheDarkSide() {
+  renderMusaStart() {
     return (
-      <Image
-        style={{width: null, height: null, flex: 1}}
-        source={require('./images/oneappBlack.png')}
-      />
+      <TouchableHighlight style={{flex: 1}} onPress={() => this.setState({gameMode: 'showInstructions'})}>
+        <Image
+          style={{width: null, height: null, flex: 1}}
+          source={require('./images/musaStart.png')}
+        />
+      </TouchableHighlight>
+    );
+  }
+
+  renderMusaInstructions() {
+    return (
+      <TouchableHighlight style={{flex: 1}} onPress={() => this.setState({gameStarted: true})}>
+        <Image
+          style={{width: null, height: null, flex: 1}}
+          source={require('./images/musaInstructions.png')}
+        />
+      </TouchableHighlight>
     );
   }
 
   renderCorrectImage() {
-    if (!this.state.gameMode) {
+    if (this.state.gameMode === 'notStarted') {
       return this.renderOneApp()
+    } else if (this.state.gameMode === 'showStart' && !this.state.gameStarted) {
+      return this.renderMusaStart()
+    } else if (this.state.gameMode === 'showInstructions' && !this.state.gameStarted) {
+      return this.renderMusaInstructions()
     }
-    return this.renderGame()
+    return this.renderGame();
   }
 
   onTap() {
@@ -77,7 +92,7 @@ export default class volfeed extends Component {
           <View style={{position: 'absolute'}}>
             <Image
               style={{width: 750, height: 1334, resizeMode: 'repeat'}}
-              source={require('./images/bg1.png')}
+              source={require('./images/gameBKG.png')}
             />
           </View>
           <View >
@@ -88,6 +103,12 @@ export default class volfeed extends Component {
                 </World>
               </Stage>
             </Loop>
+          </View>
+          <View style={{position: 'absolute'}}>
+            <Image
+              style={{width: 500, height: 700,  resizeMode: 'stretch'}}
+              source={require('./images/animation.gif')}
+            />
           </View>
         </View>
       </TouchableWithoutFeedback>
