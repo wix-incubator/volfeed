@@ -1,0 +1,3 @@
+rootProject.name = 'volfeed'
+
+include ':app'
