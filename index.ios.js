@@ -34,6 +34,36 @@ export default class volfeed extends Component {
     scale: PropTypes.number,
   };
 
+  physicsInit = (engine) => {
+    const ground = Matter.Bodies.rectangle(
+      512 * 3, 448,
+      1024 * 3, 64,
+      {
+        isStatic: true,
+      },
+    );
+
+    const leftWall = Matter.Bodies.rectangle(
+      -64, 288,
+      64, 576,
+      {
+        isStatic: true,
+      },
+    );
+
+    const rightWall = Matter.Bodies.rectangle(
+      3008, 288,
+      64, 576,
+      {
+        isStatic: true,
+      },
+    );
+
+    Matter.World.addBody(engine.world, ground);
+    Matter.World.addBody(engine.world, leftWall);
+    Matter.World.addBody(engine.world, rightWall);
+  }
+
   renderOneApp() {
     return (
       <TouchableHighlight style={{flex: 1}} onPress={() => this.setState({gameMode: true})}>
@@ -65,9 +95,10 @@ export default class volfeed extends Component {
     return (
       <Loop>
         <TouchableOpacity onPress={this.onTap}>
-        <Stage width={1024} height={576} style={{backgroundColor: '#CCC'}}>
+            <Stage width={1024} height={576} style={{backgroundColor: '#CCC'}}>
 
-            <World>
+            <World onInit={this.physicsInit}>
+
               <Character store={GameStore} />
             </World>
 

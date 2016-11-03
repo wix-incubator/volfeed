@@ -121,7 +121,7 @@ export default class Character extends Component {
     return {
       position: 'absolute',
       left: targetX * scale,
-      top: 300 - (y * scale)
+      top: y * scale
     };
   }
 
@@ -132,7 +132,7 @@ export default class Character extends Component {
       <TouchableOpacity onPress={this.jump}>
         <View style={this.getWrapperStyles()}>
           <Body
-            args={[0, 384, 1000, 64]}
+            args={[300, 384, 1000, 64]}
             inertia={Infinity}
             ref={(b) => { this.body = b; }} >
           <Sprite
