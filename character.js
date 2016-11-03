@@ -45,7 +45,7 @@ export default class Character extends Component {
     Matter.Body.applyForce(
       body,
       { x: 0, y: 0 },
-      { x: 0, y: -0.15 },
+      { x: 0, y: -2 },
     );
     Matter.Body.set(body, 'friction', 0.0001);
   };
