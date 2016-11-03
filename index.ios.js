@@ -21,48 +21,23 @@ import Character from './character'
 export default class volfeed extends Component {
   constructor(props) {
     super(props);
-    this.state = {gameMode: false};
+    this.state = {
+      gameMode: false,
+      gameStarted: true
+    };
     autobind(this);
   }
 
-  static propTypes = {
-    store: PropTypes.object,
-  };
-
-  static contextTypes = {
-    engine: PropTypes.object,
-    scale: PropTypes.number,
-  };
-
   physicsInit = (engine) => {
     const ground = Matter.Bodies.rectangle(
-      512 * 3, 448,
-      1024 * 3, 64,
-      {
-        isStatic: true,
-      },
-    );
-
-    const leftWall = Matter.Bodies.rectangle(
-      -64, 288,
-      64, 576,
-      {
-        isStatic: true,
-      },
-    );
-
-    const rightWall = Matter.Bodies.rectangle(
-      3008, 288,
-      64, 576,
+      1, 1, 1, 1,
       {
         isStatic: true,
       },
     );
 
     Matter.World.addBody(engine.world, ground);
-    Matter.World.addBody(engine.world, leftWall);
-    Matter.World.addBody(engine.world, rightWall);
-  }
+  };
 
   renderOneApp() {
     return (
@@ -85,9 +60,9 @@ export default class volfeed extends Component {
   }
 
   renderCorrectImage() {
-    // if (!this.state.gameMode) {
-    //   return this.renderOneApp()
-    // }
+    if (!this.state.gameMode) {
+      return this.renderOneApp()
+    }
     return this.renderGame()
   }
 
@@ -98,15 +73,23 @@ export default class volfeed extends Component {
   renderGame() {
     return (
       <TouchableWithoutFeedback onPress={this.onTap}>
-        <View>
-        <Loop>
-          <Stage width={1024} height={576} style={{backgroundColor: '#CCC'}}>
-            <World onInit={this.physicsInit}>
-              <Character store={GameStore}/>
-            </World>
-          </Stage>
-        </Loop>
+        <View style={{flex: 1}}>
+          <View style={{position: 'absolute'}}>
+            <Image
+              style={{width: 750, height: 1334, resizeMode: 'repeat'}}
+              source={require('./images/bg1.png')}
+            />
           </View>
+          <View >
+            <Loop >
+              <Stage width={750} height={1334}>
+                <World onInit={this.physicsInit}>
+                  <Character store={GameStore}/>
+                </World>
+              </Stage>
+            </Loop>
+          </View>
+        </View>
       </TouchableWithoutFeedback>
     );
   }
