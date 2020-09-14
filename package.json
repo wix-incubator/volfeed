@@ -16,7 +16,7 @@
     "react-autobind": "^1.0.6",
     "react-dom": "^15.3.2",
     "react-game-kit": "0.0.1",
-    "react-native": "0.36.1"
+    "react-native": "0.57.0"
   },
   "jest": {
     "preset": "jest-react-native"
